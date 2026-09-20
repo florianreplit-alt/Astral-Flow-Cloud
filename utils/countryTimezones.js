@@ -1,0 +1,85 @@
+// Country name (lowercase) -> IANA timezone
+// Countries with multiple zones use their capital/most populous zone.
+const COUNTRY_TIMEZONES = {
+  "afghanistan": "Asia/Kabul",
+  "algeria": "Africa/Algiers",
+  "argentina": "America/Argentina/Buenos_Aires",
+  "australia": "Australia/Sydney",
+  "austria": "Europe/Vienna",
+  "bangladesh": "Asia/Dhaka",
+  "belgium": "Europe/Brussels",
+  "brazil": "America/Sao_Paulo",
+  "canada": "America/Toronto",
+  "chile": "America/Santiago",
+  "china": "Asia/Shanghai",
+  "colombia": "America/Bogota",
+  "denmark": "Europe/Copenhagen",
+  "egypt": "Africa/Cairo",
+  "ethiopia": "Africa/Addis_Ababa",
+  "finland": "Europe/Helsinki",
+  "france": "Europe/Paris",
+  "germany": "Europe/Berlin",
+  "ghana": "Africa/Accra",
+  "greece": "Europe/Athens",
+  "india": "Asia/Kolkata",
+  "indonesia": "Asia/Jakarta",
+  "iran": "Asia/Tehran",
+  "iraq": "Asia/Baghdad",
+  "ireland": "Europe/Dublin",
+  "israel": "Asia/Jerusalem",
+  "italy": "Europe/Rome",
+  "japan": "Asia/Tokyo",
+  "kenya": "Africa/Nairobi",
+  "malaysia": "Asia/Kuala_Lumpur",
+  "mexico": "America/Mexico_City",
+  "morocco": "Africa/Casablanca",
+  "netherlands": "Europe/Amsterdam",
+  "new zealand": "Pacific/Auckland",
+  "nigeria": "Africa/Lagos",
+  "norway": "Europe/Oslo",
+  "pakistan": "Asia/Karachi",
+  "philippines": "Asia/Manila",
+  "poland": "Europe/Warsaw",
+  "portugal": "Europe/Lisbon",
+  "qatar": "Asia/Qatar",
+  "russia": "Europe/Moscow",
+  "saudi arabia": "Asia/Riyadh",
+  "singapore": "Asia/Singapore",
+  "south africa": "Africa/Johannesburg",
+  "south korea": "Asia/Seoul",
+  "spain": "Europe/Madrid",
+  "sweden": "Europe/Stockholm",
+  "switzerland": "Europe/Zurich",
+  "thailand": "Asia/Bangkok",
+  "turkey": "Europe/Istanbul",
+  "uae": "Asia/Dubai",
+  "united arab emirates": "Asia/Dubai",
+  "uganda": "Africa/Kampala",
+  "uk": "Europe/London",
+  "united kingdom": "Europe/London",
+  "ukraine": "Europe/Kyiv",
+  "usa": "America/New_York",
+  "united states": "America/New_York",
+  "vietnam": "Asia/Ho_Chi_Minh",
+};
+
+// Handy aliases people actually type
+const ALIASES = {
+  "us": "usa",
+  "america": "usa",
+  "england": "uk",
+  "britain": "uk",
+  "great britain": "uk",
+  "emirates": "uae",
+  "dubai": "uae",
+  "korea": "south korea",
+  "holland": "netherlands",
+};
+
+function resolveTimezone(countryInput) {
+  const key = countryInput.trim().toLowerCase();
+  const resolved = ALIASES[key] || key;
+  return COUNTRY_TIMEZONES[resolved] || null;
+}
+
+module.exports = { resolveTimezone, COUNTRY_TIMEZONES };
