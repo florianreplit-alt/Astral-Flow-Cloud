@@ -126,6 +126,33 @@ async function handleMessage(sock, msg) {
       break;
     }
 
+    case "diag": {
+      // Temporary diagnostic command — reports where persistent data is
+      // actually being read/written from, and whether it survived a restart.
+      const { BASE_DIR, DATA_DIR, AUTH_DIR } = require("../utils/dataDir");
+      const fsSync = require("fs");
+      const pathMod = require("path");
+      const settingsFile = pathMod.join(DATA_DIR, "groupSettings.json");
+      const lines = [
+        `📁 BASE_DIR: ${BASE_DIR}`,
+        `📁 DATA_DIR: ${DATA_DIR}`,
+        `📁 AUTH_DIR: ${AUTH_DIR}`,
+        `🔧 DATA_DIR env var: ${process.env.DATA_DIR || "(not set)"}`,
+        `❓ /data exists on disk: ${fsSync.existsSync("/data")}`,
+        `❓ groupSettings.json exists: ${fsSync.existsSync(settingsFile)}`,
+      ];
+      if (fsSync.existsSync(settingsFile)) {
+        try {
+          const raw = fsSync.readFileSync(settingsFile, "utf8");
+          lines.push(`📄 groupSettings.json content:\n${raw}`);
+        } catch (err) {
+          lines.push(`⚠️ Failed to read file: ${err.message}`);
+        }
+      }
+      await sock.sendMessage(from, { text: lines.join("\n") }, { quoted: msg });
+      break;
+    }
+
     case "calc": {
       const result = calculate(argText);
       await sock.sendMessage(from, { text: result }, { quoted: msg });
